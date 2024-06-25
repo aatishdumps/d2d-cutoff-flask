@@ -16,10 +16,13 @@ def index():
 def filter():
     rank = int(request.form['rank'])
     selected_categories = request.form.getlist('category[]')
+    selected_types = request.form.getlist('type[]')
     df = pd.read_csv(cutoff_file)
     eligible_df = df[(df['OPENING'] <= rank) & (df['CLOSING'] >= rank)]
     if selected_categories:
         eligible_df = eligible_df[eligible_df['CATEGORY'].isin(selected_categories)]
+    if selected_types:
+        eligible_df = eligible_df[eligible_df['TYPE'].isin(selected_types)]
     result = eligible_df.to_dict(orient='records')
     return jsonify(result)
 

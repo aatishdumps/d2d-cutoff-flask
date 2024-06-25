@@ -41,11 +41,15 @@
             $('input[name="category"]:checked').each(function () {
                 categories.push($(this).val());
             });
+            var types = [];
+            $('input[name="type"]:checked').each(function () {
+                types.push($(this).val());
+            });
 
             $.ajax({
                 url: '/filter',
                 type: 'POST',
-                data: { rank: rank, 'category[]': categories },
+                data: { rank: rank, 'category[]': categories, 'type[]': types },
                 success: function (data) {
                     table.clear().draw();
                     table.rows.add(data).draw();
@@ -65,7 +69,7 @@
             <div class="card-body">
                 <form id="filterForm">
                     <div class="form-group mb-2">
-                        <label for="rank">Enter Your Rank:</label>
+                        <label for="rank">Enter Your Rank<span class="text-danger fw-bold">*</span>:</label>
                         <input type="number" class="form-control" id="rank" name="rank" required>
                     </div>
                     <div class="form-group mb-2">
@@ -77,6 +81,20 @@
                             <label class="form-check-label" for="category{{loop.index}}">{{category}}</label>
                         </div>
                         {% endfor %}
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="type">Select Type:</label><br>
+                        
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="type1" name="type" value="SFI">
+                            <label class="form-check-label" for="type1">SFI</label>
+                        </div>
+                        
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="type2" name="type" value="GOV/GIA">
+                            <label class="form-check-label" for="type2">GOV/GIA</label>
+                        </div>
+                        
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
